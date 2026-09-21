@@ -1,0 +1,93 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>ВкусноДома — рецепты</title>
+
+    <link rel="stylesheet" href="{% static 'main/style.css' %}">
+</head>
+
+<body>
+
+<header>
+    <div class="logo">🍴 ВкусноДома</div>
+
+    <nav>
+        <a href="/">Главная</a>
+        <a href="#">Рецепты</a>
+        <a href="#">Категории</a>
+    </nav>
+</header>
+
+
+<section class="hero">
+
+    <h1>Готовим вкусно! 👨‍🍳</h1>
+
+    <p>
+        Простые и вкусные рецепты на каждый день
+    </p>
+
+    <form class="search">
+        <input
+            type="text"
+            placeholder="Найти рецепт..."
+        >
+
+        <button type="submit">
+            🔍 Найти
+        </button>
+    </form>
+
+</section>
+
+
+<main class="container">
+
+    <h2>🔥 Популярные рецепты</h2>
+
+    <div class="recipes">
+
+        {% for recipe in recipes %}
+
+            <div class="card">
+
+                <div class="card-image">
+                    {{ recipe.emoji }}
+                </div>
+
+                <div class="card-content">
+
+                    <h3>
+                        {{ recipe.name }}
+                    </h3>
+
+                    <p>
+                        {{ recipe.description }}
+                    </p>
+
+               <a href="{% url 'recipe' recipe.id %}" class="button">
+    Смотреть рецепт
+</a>
+
+                </div>
+
+            </div>
+
+        {% endfor %}
+
+    </div>
+
+</main>
+
+
+<footer>
+    <p>© 2026 ВкусноДома 🍳</p>
+</footer>
+
+</body>
+</html>
