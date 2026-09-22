@@ -27,9 +27,13 @@
 
     <div class="recipe-card">
 
-        <div class="recipe-image">
-            {{ recipe.emoji }}
-        </div>
+            <div class="recipe-image">
+                    {% if recipe.image_url %}
+                        <img src="{{ recipe.image_url }}" alt="{{ recipe.name }}">
+                    {% else %}
+                        <span>{{ recipe.emoji }}</span>
+                    {% endif %}
+                </div>
 
         <div class="recipe-info">
 

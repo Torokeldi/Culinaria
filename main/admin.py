@@ -4,5 +4,5 @@ from .models import Recipe
 
 @admin.register(Recipe)
 class RecipeAdmin(admin.ModelAdmin):
-    list_display = ('name', 'emoji')
+    list_display = ('name', 'image_url')
     search_fields = ('name', 'description')

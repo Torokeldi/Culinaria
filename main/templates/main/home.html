@@ -1,21 +1,16 @@
 {% load static %}
-
 <!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>ВкусноДома — рецепты</title>
-
     <link rel="stylesheet" href="{% static 'main/style.css' %}">
 </head>
-
 <body>
 
 <header>
     <div class="logo">🍴 ВкусноДома</div>
-
     <nav>
         <a href="/">Главная</a>
         <a href="#">Рецепты</a>
@@ -23,67 +18,56 @@
     </nav>
 </header>
 
-
 <section class="hero">
-
     <h1>Готовим вкусно! 👨‍🍳</h1>
+    <p>Простые и вкусные рецепты на каждый день</p>
 
-    <p>
-        Простые и вкусные рецепты на каждый день
-    </p>
-
-    <form class="search">
-        <input
-            type="text"
-            placeholder="Найти рецепт..."
-        >
-
-        <button type="submit">
-            🔍 Найти
-        </button>
-    </form>
-
+<form class="search" method="GET" action="{% url 'home' %}">
+    <input
+        type="text"
+        name="q"
+        placeholder="Найти рецепт..."
+        value="{{ query }}"
+    >
+    <button type="submit">🔍</button>
+</form>
 </section>
 
-
 <main class="container">
-
+    {% if query %}
+    <h2>🔎 Результаты поиска: «{{ query }}»</h2>
+{% else %}
     <h2>🔥 Популярные рецепты</h2>
+{% endif %}
 
     <div class="recipes">
-
         {% for recipe in recipes %}
-
             <div class="card">
 
                 <div class="card-image">
-                    {{ recipe.emoji }}
+                    {% if recipe.image_url %}
+                        <img src="{{ recipe.image_url }}" alt="{{ recipe.name }}">
+                    {% else %}
+                        <span>{{ recipe.emoji }}</span>
+                    {% endif %}
                 </div>
 
                 <div class="card-content">
-
-                    <h3>
-                        {{ recipe.name }}
-                    </h3>
-
-                    <p>
-                        {{ recipe.description }}
-                    </p>
-
-               <a href="{% url 'recipe' recipe.id %}" class="button">
-    Смотреть рецепт
-</a>
-
+                    <h3>{{ recipe.name }}</h3>
+                    <p>{{ recipe.description }}</p>
+                    <a href="{% url 'recipe' recipe.id %}" class="button">Смотреть рецепт</a>
                 </div>
 
             </div>
-
-        {% endfor %}
-
+   {% empty %}
+    {% if query %}
+        <p>😔 По запросу «{{ query }}» ничего не найдено.</p>
+    {% else %}
+        <p>Рецепты пока не добавлены.</p>
+    {% endif %}
+{% endfor %}
     </div>
-
 </main>
-
 
 <footer>
     <p>© 2026 ВкусноДома 🍳</p>
