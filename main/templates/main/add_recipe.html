@@ -1,0 +1,187 @@
+{% load static %}
+
+<!DOCTYPE html>
+
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Добавить рецепт — ВкусноДома</title>
+    <link rel="stylesheet" href="{% static 'main/style.css' %}">
+</head>
+<body>
+
+<header>
+    <div class="logo">🍴 ВкусноДома</div>
+
+
+<nav>
+    <a href="{% url 'home' %}">Главная</a>
+    <a href="{% url 'add_recipe' %}">Рецепты</a>
+    <a href="{% url 'categories' %}">Категории</a>
+
+    {% if user.is_authenticated %}
+        <span style="margin-left: 25px; color: #ffe0b2; font-weight: bold;">
+            🧑‍🍳 {{ user.username }}
+        </span>
+
+        <a href="{% url 'logout' %}" style="color: #ffe0b2;">
+            Выйти
+        </a>
+    {% else %}
+        <a href="{% url 'login' %}">Войти</a>
+    {% endif %}
+</nav>
+
+
+</header>
+
+<main class="add-recipe-page">
+
+
+<div class="add-recipe-card">
+
+    <div class="add-recipe-header">
+        <h1>🍳 Добавить рецепт</h1>
+        <p>Поделитесь своим любимым блюдом с другими пользователями</p>
+    </div>
+
+
+    {% if error %}
+        <div class="recipe-error">
+            {{ error }}
+        </div>
+    {% endif %}
+
+
+    <form method="POST" action="{% url 'add_recipe' %}" class="recipe-form">
+        {% csrf_token %}
+
+        <div class="form-group">
+            <label for="name">Название рецепта</label>
+            <input
+                type="text"
+                id="name"
+                name="name"
+                placeholder="Например: Домашний борщ"
+                value="{{ name|default:'' }}"
+                required
+            >
+        </div>
+
+
+        <div class="form-group">
+            <label for="description">Описание</label>
+            <textarea
+                id="description"
+                name="description"
+                rows="4"
+                placeholder="Кратко расскажите о блюде..."
+                required
+            >{{ description|default:'' }}</textarea>
+        </div>
+
+
+        <div class="form-group">
+            <label for="category">Категория</label>
+
+            <select id="category" name="category" required>
+                <option value="">Выберите категорию</option>
+                <option value="Супы">🍲 Супы</option>
+                <option value="Мясные блюда">🍖 Мясные блюда</option>
+                <option value="Курица">🍗 Курица</option>
+                <option value="Рыба">🐟 Рыба</option>
+                <option value="Салаты">🥗 Салаты</option>
+                <option value="Паста">🍝 Паста</option>
+                <option value="Выпечка">🍕 Выпечка</option>
+                <option value="Десерты">🍰 Десерты</option>
+                <option value="Завтраки">🥞 Завтраки</option>
+                <option value="Напитки">🥤 Напитки</option>
+                <option value="Рисовые блюда">🍚 Рисовые блюда</option>
+            </select>
+        </div>
+
+
+        <div class="form-group">
+            <label for="image_url">Ссылка на изображение</label>
+            <input
+                type="url"
+                id="image_url"
+                name="image_url"
+                placeholder="https://example.com/image.jpg"
+                value="{{ image_url|default:'' }}"
+            >
+            <small>Можно оставить пустым — тогда будет показан эмодзи 🍲</small>
+        </div>
+
+
+        <div class="form-group">
+            <label for="emoji">Эмодзи блюда</label>
+            <input
+                type="text"
+                id="emoji"
+                name="emoji"
+                placeholder="🍲"
+                maxlength="10"
+                value="{{ emoji|default:'🍲' }}"
+            >
+        </div>
+
+
+        <div class="form-group">
+            <label for="ingredients">
+                🥕 Ингредиенты
+            </label>
+
+            <textarea
+                id="ingredients"
+                name="ingredients"
+                rows="8"
+                placeholder="500 г мяса&#10;2 картофелины&#10;1 морковь&#10;1 луковица&#10;Соль по вкусу"
+                required
+            >{{ ingredients|default:'' }}</textarea>
+
+            <small>Каждый ингредиент пишите с новой строки.</small>
+        </div>
+
+
+        <div class="form-group">
+            <label for="steps">
+                👨‍🍳 Приготовление
+            </label>
+
+            <textarea
+                id="steps"
+                name="steps"
+                rows="10"
+                placeholder="Нарежьте мясо небольшими кусочками.&#10;Обжарьте мясо на сковороде.&#10;Добавьте овощи.&#10;Залейте водой и варите до готовности."
+                required
+            >{{ steps|default:'' }}</textarea>
+
+            <small>Каждый шаг приготовления пишите с новой строки.</small>
+        </div>
+
+
+        <div class="recipe-form-actions">
+            <a href="{% url 'home' %}" class="cancel-button">
+                Отмена
+            </a>
+
+            <button type="submit" class="button submit-recipe-button">
+                ✨ Добавить рецепт
+            </button>
+        </div>
+
+    </form>
+
+</div>
+
+</main>
+
+<footer>
+    <p>© 2026 ВкусноДома 🍳</p>
+</footer>
+
+</body>
+</html>
+

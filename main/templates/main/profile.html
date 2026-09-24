@@ -1,0 +1,95 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Профиль — ВкусноДома</title>
+    <link rel="stylesheet" href="{% static 'main/style.css' %}">
+</head>
+<body>
+
+<header>
+    <div class="logo">🍴 ВкусноДома</div>
+    <nav>
+        <a href="{% url 'home' %}">Главная</a>
+        <a href="{% url 'add_recipe' %}">Рецепты</a>
+        <a href="{% url 'categories' %}">Категории</a>
+        {% if user.is_authenticated %}
+            <span style="margin-left: 25px; color: #ffe0b2; font-weight: bold;">🧑‍🍳 {{ user.username }}</span>
+            <a href="{% url 'logout' %}" style="color: #ffe0b2;">Выйти</a>
+        {% else %}
+            <a href="{% url 'login' %}">Войти</a>
+        {% endif %}
+    </nav>
+</header>
+
+<main class="profile-page">
+<div class="profile-card">
+
+    <div class="profile-header">
+        <div class="profile-avatar">🧑‍🍳</div>
+        <div>
+            <h1>{{ user.username }}</h1>
+            <p>Добро пожаловать в ваш профиль!</p>
+        </div>
+    </div>
+
+    <div class="profile-info">
+        <div class="profile-info-item">
+            <span class="profile-label">👤 Имя пользователя</span>
+            <span class="profile-value">{{ user.username }}</span>
+        </div>
+        <div class="profile-info-item">
+            <span class="profile-label">📧 Email</span>
+            <span class="profile-value">{{ user.email|default:"Email не указан" }}</span>
+        </div>
+        <div class="profile-info-item">
+            <span class="profile-label">📅 Дата регистрации</span>
+            <span class="profile-value">{{ user.date_joined|date:"d.m.Y" }}</span>
+        </div>
+    </div>
+
+    <div class="profile-actions">
+        <a href="{% url 'add_recipe' %}" class="button">✨ Добавить рецепт</a>
+        <a href="{% url 'home' %}" class="cancel-button">🏠 На главную</a>
+    </div>
+
+    <div class="profile-recipes">
+        <h2>🍳 Мои рецепты</h2>
+        {% if recipes %}
+            <div class="recipes">
+                {% for recipe in recipes %}
+                    <div class="card">
+                        <div class="card-image">
+                            {% if recipe.image_url %}
+                                <img src="{{ recipe.image_url }}" alt="{{ recipe.name }}">
+                            {% else %}
+                                <span>{{ recipe.emoji|default:"🍲" }}</span>
+                            {% endif %}
+                        </div>
+                        <div class="card-content">
+                            <h3>{{ recipe.name }}</h3>
+                            <p>{{ recipe.description }}</p>
+                            <a href="{% url 'recipe' recipe.id %}" class="button">Смотреть рецепт</a>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="empty-state">
+                <p>🍽️ Вы пока не добавили ни одного рецепта.</p>
+                <a href="{% url 'add_recipe' %}" class="button">Добавить первый рецепт</a>
+            </div>
+        {% endif %}
+    </div>
+
+</div>
+</main>
+
+<footer>
+    <p>© 2026 ВкусноДома 🍳</p>
+</footer>
+
+</body>
+</html>

@@ -1,68 +1,72 @@
 {% load static %}
-
 <!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>{{ recipe.name }} — ВкусноДома</title>
-
     <link rel="stylesheet" href="{% static 'main/style.css' %}">
 </head>
-
 <body>
 
 <header>
     <div class="logo">🍴 ВкусноДома</div>
-
     <nav>
-        <a href="/">Главная</a>
-        <a href="#">Рецепты</a>
-        <a href="#">Категории</a>
+        <a href="{% url 'home' %}">Главная</a>
+        <a href="{% url 'add_recipe' %}">Рецепты</a>
+        <a href="{% url 'categories' %}">Категории</a>
+
+        <!-- Динамическое меню авторизации -->
+        {% if user.is_authenticated %}
+            <span style="margin-left: 25px; color: #ffe0b2; font-weight: bold;">🧑‍🍳 {{ user.username }}</span>
+            <a href="{% url 'logout' %}" style="color: #ffe0b2;">Выйти</a>
+        {% else %}
+            <a href="{% url 'login' %}">Войти</a>
+        {% endif %}
     </nav>
 </header>
 
 <main class="recipe-page">
-
     <div class="recipe-card">
 
-            <div class="recipe-image">
-                    {% if recipe.image_url %}
-                        <img src="{{ recipe.image_url }}" alt="{{ recipe.name }}">
-                    {% else %}
-                        <span>{{ recipe.emoji }}</span>
-                    {% endif %}
-                </div>
+        <div class="recipe-image">
+            {% if recipe.image_url %}
+                <img src="{{ recipe.image_url }}" alt="{{ recipe.name }}">
+            {% else %}
+                <span>{{ recipe.emoji|default:"🍲" }}</span>
+            {% endif %}
+        </div>
 
         <div class="recipe-info">
-
             <h1>{{ recipe.name }}</h1>
-
-            <p class="recipe-description">
-                {{ recipe.description }}
-            </p>
+            <p class="recipe-description">{{ recipe.description }}</p>
 
             <h2>🥕 Ингредиенты</h2>
-
-      <div class="ingredients">
-    {{ recipe.ingredients|linebreaks }}
-</div>
+            <!-- Используем тег <ul>, так как в CSS прописаны стили для .ingredients li -->
+            <ul class="ingredients">
+                {% for ingredient in recipe.ingredients.splitlines %}
+                    {% if ingredient.strip %}
+                        <li>{{ ingredient }}</li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
 
             <h2>👨‍🍳 Приготовление</h2>
+            <!-- Используем тег <ol>, так как в CSS для .steps настроены отступы слева -->
+            <ol class="steps">
+                {% for step in recipe.steps.splitlines %}
+                    {% if step.strip %}
+                        <li>{{ step }}</li>
+                    {% endif %}
+                {% endfor %}
+            </ol>
 
-   <div class="steps">
-    {{ recipe.steps|linebreaks }}
-</div>
-
-            <a href="/" class="button">
+            <a href="{% url 'home' %}" class="button">
                 ← Вернуться к рецептам
             </a>
-
         </div>
 
     </div>
-
 </main>
 
 <footer>

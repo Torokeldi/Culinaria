@@ -1,0 +1,130 @@
+{% load static %}
+
+<!DOCTYPE html>
+
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Категории — ВкусноДома</title>
+    <link rel="stylesheet" href="{% static 'main/style.css' %}">
+</head>
+<body>
+
+<header>
+    <div class="logo">🍴 ВкусноДома</div>
+
+
+<nav>
+    <a href="{% url 'home' %}">Главная</a>
+    <a href="{% url 'add_recipe' %}">Рецепты</a>
+    <a href="{% url 'categories' %}">Категории</a>
+
+    {% if user.is_authenticated %}
+        <span style="margin-left: 25px; color: #ffe0b2; font-weight: bold;">
+            🧑‍🍳 {{ user.username }}
+        </span>
+
+        <a href="{% url 'logout' %}" style="color: #ffe0b2;">
+            Выйти
+        </a>
+    {% else %}
+        <a href="{% url 'login' %}">Войти</a>
+    {% endif %}
+</nav>
+
+
+</header>
+
+<main class="container">
+
+
+<section class="categories-page">
+
+    <div class="page-header">
+        <h1>🍽️ Категории рецептов</h1>
+        <p>Выберите категорию и найдите блюдо по вкусу</p>
+    </div>
+
+
+    <div class="categories-grid">
+
+        <a href="#" class="category-card">
+            <div class="category-icon">🍲</div>
+            <h2>Супы</h2>
+            <p>Борщ, солянка, супы и другие горячие блюда</p>
+        </a>
+
+        <a href="#" class="category-card">
+            <div class="category-icon">🍖</div>
+            <h2>Мясные блюда</h2>
+            <p>Вкусные блюда из мяса на каждый день</p>
+        </a>
+
+            <a href="#" class="category-card">
+            <div class="category-icon">🍚</div>
+            <h2>Рисовые блюда</h2>
+            <p>Вкусные блюда содержащий много риса</p>
+        </a>
+
+        <a href="#" class="category-card">
+            <div class="category-icon">🍗</div>
+            <h2>Курица</h2>
+            <p>Простые и аппетитные блюда из курицы</p>
+        </a>
+
+        <a href="#" class="category-card">
+            <div class="category-icon">🐟</div>
+            <h2>Рыба</h2>
+            <p>Полезные и вкусные блюда из рыбы</p>
+        </a>
+
+        <a href="#" class="category-card">
+            <div class="category-icon">🥗</div>
+            <h2>Салаты</h2>
+            <p>Свежие и лёгкие салаты</p>
+        </a>
+
+        <a href="#" class="category-card">
+            <div class="category-icon">🍝</div>
+            <h2>Паста</h2>
+            <p>Макароны, спагетти и другие блюда</p>
+        </a>
+
+        <a href="#" class="category-card">
+            <div class="category-icon">🍕</div>
+            <h2>Выпечка</h2>
+            <p>Пицца, пироги, булочки и выпечка</p>
+        </a>
+
+        <a href="#" class="category-card">
+            <div class="category-icon">🍰</div>
+            <h2>Десерты</h2>
+            <p>Сладости, торты и домашние десерты</p>
+        </a>
+
+        <a href="#" class="category-card">
+            <div class="category-icon">🥞</div>
+            <h2>Завтраки</h2>
+            <p>Идеи для вкусного начала дня</p>
+        </a>
+
+        <a href="#" class="category-card">
+            <div class="category-icon">🥤</div>
+            <h2>Напитки</h2>
+            <p>Коктейли, лимонады и горячие напитки</p>
+        </a>
+
+    </div>
+
+</section>
+
+
+</main>
+
+<footer>
+    <p>© 2026 ВкусноДома 🍳</p>
+</footer>
+
+</body>
+</html>
